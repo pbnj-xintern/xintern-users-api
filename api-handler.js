@@ -8,7 +8,7 @@ const dbUrl = process.env.MONGO_URL;
 const userCreator = require('./helpers/user');
 module.exports.createUser = async (event, context, callback) => {
   let result = await userCreator.createUser(event);
-  console.log(result)
+  return result;
 };
 
 
