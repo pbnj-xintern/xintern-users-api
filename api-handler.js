@@ -12,10 +12,10 @@ module.exports.createUser = async (event, context, callback) => {
       username: event.body.username
     })
   ).then(user => {
-    if (user.length > 0){
+    if (user.length > 0) {
       return status.createErrorResponse(401, "User exists");
-    }else{
-      const hash = bcrypt.hash(event.body.password, 10, (err, hash) => {
+    } else {
+      bcrypt.hash(event.body.password, 10, (err, hash) => {
         const user = new User({
           _id: new mongoose.Types.ObjectId(),
           username: event.body.username,
@@ -24,7 +24,7 @@ module.exports.createUser = async (event, context, callback) => {
               first: event.body.name.first,
               last: event.body.name.last
           },
-          sex:  event.body.sex ,
+          sex: event.body.sex,
           program: event.body.program,
           age: event.body.age,
           isShowInfo: event.body.isShowInfo,
