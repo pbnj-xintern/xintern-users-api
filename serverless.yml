@@ -12,7 +12,6 @@ provider:
   stage: dev
   region: us-east-2
   environment:
-    TEST_KEY: "${self:custom.tokens.TEST_KEY}"
     MONGO_URL: "${self:custom.tokens.MONGO_URL}"
 
 package:
