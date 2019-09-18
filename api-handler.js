@@ -5,10 +5,14 @@ const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
 var db = require('@pbnj-xintern/xintern-commons/util/db');
 const dbUrl = process.env.MONGO_URL;
-const userCreator = require('./helpers/user');
+const userHelper = require('./helpers/user');
 module.exports.createUser = async (event, context, callback) => {
-  return await userCreator.createUser(event);
+  return await userHelper.createUser(event);
 };
+
+module.exports.login = async (event, context, callback) => {
+  return await userHelper.login(event);
+}
 
 
 

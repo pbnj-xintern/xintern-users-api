@@ -13,6 +13,7 @@ provider:
   region: us-east-2
   environment:
     MONGO_URL: "${self:custom.tokens.MONGO_URL}"
+    TOKEN_SECRET: "${self:custom.tokens.TOKEN_SECRET}"
 
 package:
   exclude:
@@ -60,6 +61,13 @@ functions:
     events:
       - http:
           path: user
+          method: POST
+          cors: true
+  login:
+    handler: api-handler.login
+    events:
+      - http:
+          path: user/login
           method: POST
           cors: true
 
