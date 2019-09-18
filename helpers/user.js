@@ -50,9 +50,6 @@ module.exports.createUser = async e => {
     } catch(err){
       return status.createErrorResponse(500, "Unable to generate hash")
     }
-    
-    
-  
   }
     
 }
