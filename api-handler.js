@@ -7,8 +7,7 @@ var db = require('@pbnj-xintern/xintern-commons/util/db');
 const dbUrl = process.env.MONGO_URL;
 const userCreator = require('./helpers/user');
 module.exports.createUser = async (event, context, callback) => {
-  let result = await userCreator.createUser(event);
-  return result;
+  return await userCreator.createUser(event);
 };
 
 
