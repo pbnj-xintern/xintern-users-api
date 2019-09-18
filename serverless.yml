@@ -12,7 +12,7 @@ provider:
   stage: dev
   region: us-east-2
   environment:
-    TEST_KEY: "${self:custom.tokens.TEST_KEY}"
+    MONGO_URL: "${self:custom.tokens.MONGO_URL}"
 
 package:
   exclude:
@@ -54,6 +54,13 @@ functions:
       - http:
           path: hello
           method: GET
+          cors: true
+  createUser:
+    handler: api-handler.createUser
+    events:
+      - http:
+          path: user
+          method: POST
           cors: true
 
 #    The following are a few example events you can configure

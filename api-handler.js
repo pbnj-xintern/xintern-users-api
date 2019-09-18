@@ -1,35 +1,15 @@
 'use strict';
-const axios = require('axios')
-
-const TEST_KEY = process.env.TEST_KEY
-
-//--------------- FUNCTIONS ---------------
-
-//Returns a success response
-const sendOKResponse = (body) => {
-  return {
-    statusCode: 200,
-    headers: { 
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*"
-    },
-    body: JSON.stringify(body)
-  }
-}
-
-//Returns an error response
-const sendErrorResponse = (statusCode, errorMessage) => {
-  console.error('sendErrorRepsonse: console logging error msg:\n', errorMessage)
-  return { 
-    statusCode: statusCode, 
-    headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" },
-    body: JSON.stringify({ error: errorMessage })
-  }
-}
-
-//--------------- LAMBDA FUNCTIONS ---------------
-
-module.exports.hello = async (event) => {
-  console.log("how tokens/secrets will be stored in serverless:", TEST_KEY)
-  return sendOKResponse(`how tokens/secrets will be stored in serverless: ${TEST_KEY}`)
+const User = require('@pbnj-xintern/xintern-commons/models/User');
+const status = require('@pbnj-xintern/xintern-commons/util/status')
+const bcrypt = require('bcryptjs');
+const mongoose = require('mongoose');
+var db = require('@pbnj-xintern/xintern-commons/util/db');
+const dbUrl = process.env.MONGO_URL;
+const userCreator = require('./helpers/user');
+module.exports.createUser = async (event, context, callback) => {
+  return await userCreator.createUser(event);
 };
+
+
+
+
