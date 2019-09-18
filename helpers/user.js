@@ -15,7 +15,7 @@ module.exports.createUser = async e => {
   )
 
   if (user.length > 0) {
-    console.log("found exisiting user:" + user.username);
+    console.log(`found exisiting user: ${user.username}`);
     return status.createErrorResponse(401, "User exists");
   }
   else {
@@ -45,14 +45,11 @@ module.exports.createUser = async e => {
         user: result.username
         });
       }catch(err){
-        return status.createErrorResponse(401, err.message)
+        return status.createErrorResponse(500, err.message)
       }
     } catch(err){
-      console.log("Unable to generate hash");
+      return status.createErrorResponse(500, "Unable to generate hash")
     }
-    
-    
-  
   }
     
 }
