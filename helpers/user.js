@@ -76,7 +76,7 @@ module.exports.login = async e =>{
 					expiresIn: "1h"
 				}
 			);
-			console.log(token, 'token');
+			console.log(`Generated token: ${token}`);
 			return status.createSuccessResponse(200, {
 				message: 'Login Successful',
 				token: token,
