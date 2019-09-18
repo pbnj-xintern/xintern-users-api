@@ -6,8 +6,7 @@ const jwt = require('jsonwebtoken');
 var db = require('@pbnj-xintern/xintern-commons/util/db');
 const dbUrl = process.env.MONGO_URL;
 
-module.exports.createUser = async e => {
-    const event = JSON.parse(e.body);
+module.exports.createUser = async event => {
     console.log("Searching for existing user...");
     let user = await db(dbUrl, () =>
     User.find({
@@ -37,7 +36,7 @@ module.exports.createUser = async e => {
 		program: event.program,
 		age: event.age,
 		isShowInfo: event.isShowInfo,
-		role: event.role, //XINT or ADMIN
+		role: "XINT", 
 		});
       try{
 		let result = await db(dbUrl, () => user.save());
@@ -57,8 +56,7 @@ module.exports.createUser = async e => {
     
 }
 
-module.exports.login = async e =>{
-	const event = JSON.parse(e.body);
+module.exports.login = async event =>{
     let user = await db(dbUrl, () => User.find({username : event.username}));
     if(user.length < 1)
     	return status.createErrorResponse(401, 'Authentication Failed')
