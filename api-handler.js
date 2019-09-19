@@ -12,8 +12,6 @@ module.exports.login = async (event, context, callback) => {
 
 module.exports.patchAdminUser = async event => {
 
-  console.log('hittinghere')
-
   let body = typeof (event.body) === 'string' ?
     JSON.parse(event.body) :
     event.body
@@ -21,9 +19,6 @@ module.exports.patchAdminUser = async event => {
   let pathParameters = typeof (event.pathParameters) === 'string' ?
     JSON.parse(event.pathParameters) :
     event.pathParameters
-
-  console.log('pathp', pathParameters)
-  console.log('b', body)
 
   if (!body)
     return status.createErrorResponse(403, 'Not authorized to request this patch')
