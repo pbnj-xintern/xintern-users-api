@@ -13,6 +13,7 @@ provider:
   region: us-east-2
   environment:
     MONGO_URL: "${self:custom.tokens.MONGO_URL}"
+    TOKEN_SECRET: "${self:custom.tokens.TOKEN_SECRET}"
 
 package:
   exclude:
@@ -62,7 +63,13 @@ functions:
           path: user/admin/{userId}
           method: PATCH
           cors: true
-
+  login:
+    handler: api-handler.login
+    events:
+      - http:
+          path: user/login
+          method: POST
+          cors: true
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events

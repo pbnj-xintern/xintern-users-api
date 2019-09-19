@@ -3,8 +3,12 @@ const status = require('@pbnj-xintern/xintern-commons/util/status')
 const UserHelper = require('./helpers/user');
 
 module.exports.createUser = async (event, context, callback) => {
-  return await UserHelper.createUser(event);
+  return await userHelper.createUser(JSON.parse(event.body));
 };
+
+module.exports.login = async (event, context, callback) => {
+  return await userHelper.login(JSON.parse(event.body));
+}
 
 module.exports.patchAdminUser = async event => {
 

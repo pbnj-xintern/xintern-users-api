@@ -2,11 +2,11 @@ const User = require('@pbnj-xintern/xintern-commons/models/User');
 const status = require('@pbnj-xintern/xintern-commons/util/status')
 const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
 var db = require('@pbnj-xintern/xintern-commons/util/db');
 const dbUrl = process.env.MONGO_URL;
 
-module.exports.createUser = async e => {
-  const event = JSON.parse(e.body);
+module.exports.createUser = async event => {
   console.log("Searching for existing user...");
   let user = await db(dbUrl, () =>
     User.find({
@@ -36,7 +36,7 @@ module.exports.createUser = async e => {
         program: event.program,
         age: event.age,
         isShowInfo: event.isShowInfo,
-        role: event.role, //XINT or ADMIN
+        role: "XINT",
       });
       try {
         let result = await db(dbUrl, () => user.save());
@@ -52,7 +52,41 @@ module.exports.createUser = async e => {
     }
   }
 
+
+
 }
+
+module.exports.login = async event => {
+  let user = await db(dbUrl, () => User.find({ username: event.username }));
+  if (user.length < 1)
+    return status.createErrorResponse(401, 'Authentication Failed')
+  else {
+    try {
+      let bycryptResult = await bcrypt.compare(event.password, user[0].password);
+      if (!bycryptResult)
+        return status.createErrorResponse(401, 'Authentication Failed');
+      const token = jwt.sign({
+        username: user[0].username,
+        userId: user[0]._id
+      },
+        process.env.TOKEN_SECRET,
+        {
+          expiresIn: "1h"
+        }
+      );
+      console.log(`Generated token: ${token}`);
+      return status.createSuccessResponse(200, {
+        message: 'Login Successful',
+        token: token,
+        uid: user[0]._id
+      })
+
+    } catch (err) {
+      return status.createErrorResponse(401, err.msg);
+    }
+  }
+}
+
 
 module.exports.patchToAdmin = async (newAdminId, adminId) => {
 
