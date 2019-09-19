@@ -1,15 +1,32 @@
 'use strict';
-const User = require('@pbnj-xintern/xintern-commons/models/User');
 const status = require('@pbnj-xintern/xintern-commons/util/status')
-const bcrypt = require('bcryptjs');
-const mongoose = require('mongoose');
-var db = require('@pbnj-xintern/xintern-commons/util/db');
-const dbUrl = process.env.MONGO_URL;
-const userCreator = require('./helpers/user');
+const UserHelper = require('./helpers/user');
+
 module.exports.createUser = async (event, context, callback) => {
-  return await userCreator.createUser(event);
+  return await UserHelper.createUser(event);
 };
 
+module.exports.patchAdminUser = async event => {
 
+  console.log('hittinghere')
 
+  let body = typeof (event.body) === 'string' ?
+    JSON.parse(event.body) :
+    event.body
 
+  let pathParameters = typeof (event.pathParameters) === 'string' ?
+    JSON.parse(event.pathParameters) :
+    event.pathParameters
+
+  console.log('pathp', pathParameters)
+  console.log('b', body)
+
+  if (!body)
+    return status.createErrorResponse(403, 'Not authorized to request this patch')
+
+  if (!pathParameters)
+    return status.createErrorResponse(400, 'No ID supplied')
+
+  return await UserHelper.patchToAdmin(pathParameters.userId, body.adminId)
+
+}

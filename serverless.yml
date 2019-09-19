@@ -48,13 +48,6 @@ custom:
 #    - exclude-me-dir/**
 
 functions:
-  hello:
-    handler: api-handler.hello
-    events:
-      - http:
-          path: hello
-          method: GET
-          cors: true
   createUser:
     handler: api-handler.createUser
     events:
@@ -62,6 +55,14 @@ functions:
           path: user
           method: POST
           cors: true
+  patchAdminUser:
+    handler: api-handler.patchAdminUser
+    events:
+      - http:
+          path: user/admin/{userId}
+          method: PATCH
+          cors: true
+
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
