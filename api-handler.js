@@ -9,7 +9,6 @@ const userHelper = require('./helpers/user');
 const checkRequest = require('@pbnj-xintern/xintern-commons/util/request_checker');
 const checkRequestBody = require('@pbnj-xintern/xintern-commons/util/request_checker');
 module.exports.createUser = async (event, context, callback) => {
-	console.log(typeof(event.body))
 	return await 
 		userHelper.createUser(typeof(event.body) == "object" ? event.body : JSON.parse(event.body));
 };
