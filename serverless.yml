@@ -49,19 +49,19 @@ custom:
 #    - exclude-me-dir/**
 
 functions:
-  hello:
-    handler: api-handler.hello
-    events:
-      - http:
-          path: hello
-          method: GET
-          cors: true
   createUser:
     handler: api-handler.createUser
     events:
       - http:
           path: user
           method: POST
+          cors: true
+  patchAdminUser:
+    handler: api-handler.patchAdminUser
+    events:
+      - http:
+          path: user/admin/{userId}
+          method: PATCH
           cors: true
   login:
     handler: api-handler.login
