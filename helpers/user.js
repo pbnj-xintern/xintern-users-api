@@ -86,3 +86,13 @@ module.exports.login = async event =>{
 		}
     }
 }
+
+module.exports.updateUser = async (uid,event) =>{
+	try{
+		let result = await db(dbUrl, () => User.findByIdAndUpdate(uid, event))
+		return status.createSuccessResponse(201, event);	
+	}
+	catch(err){
+		return status.createErrorResponse(500, "Unable to update user");
+	}
+}

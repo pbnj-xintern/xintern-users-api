@@ -70,6 +70,17 @@ functions:
           path: user/login
           method: POST
           cors: true
+  updateUser:
+    handler: api-handler.updateUser
+    events:
+      - http:
+          path: user/{uid}
+          method: PATCH
+          request:
+            parameters:
+              paths:
+                uid: true
+          cors: true
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
