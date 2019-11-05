@@ -8,7 +8,7 @@ const dbUrl = process.env.MONGO_URL;
 
 module.exports.createUser = async event => {
   console.log("Searching for existing user...");
-  let user = await db(dbUrl, () =>
+  let user = await db.exec(dbUrl, () =>
     User.find({
       username: event.username
     })
@@ -39,7 +39,7 @@ module.exports.createUser = async event => {
         role: "XINT",
       });
       try {
-        let result = await db(dbUrl, () => user.save());
+        let result = await db.exec(dbUrl, () => user.save());
         console.log(`User created: ${user.username}`)
         return status.createSuccessResponse(201, {
           user: result.username
@@ -57,7 +57,7 @@ module.exports.createUser = async event => {
 }
 
 module.exports.login = async event => {
-  let user = await db(dbUrl, () => User.find({ username: event.username }));
+  let user = await db.exec(dbUrl, () => User.find({ username: event.username }));
   if (user.length < 1)
     return status.createErrorResponse(401, 'Authentication Failed')
   else {
@@ -90,7 +90,7 @@ module.exports.login = async event => {
 
 module.exports.patchToAdmin = async (newAdminId, adminId) => {
 
-  let isAdmin = await db(
+  let isAdmin = await db.exec(
     dbUrl,
     () => User.find({ _id: adminId }).select('role').then(doc => {
       if (!doc)
@@ -102,7 +102,7 @@ module.exports.patchToAdmin = async (newAdminId, adminId) => {
   if (!isAdmin)
     return status.createErrorResponse(403, "Not authorized to create account")
 
-  return db(
+  return db.exec(
     dbUrl,
     () => User.findOneAndUpdate({ _id: newAdminId }, { role: "ADMIN" }).then(user => {
       if (!user)
