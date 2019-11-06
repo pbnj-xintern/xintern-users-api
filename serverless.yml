@@ -12,7 +12,7 @@ provider:
   stage: dev
   region: us-east-2
   environment:
-    MONGO_URL: "${self:custom.tokens.MONGO_URL}"
+    MONGO_URL: "${self:custom.tokens.MONGO_TEST}"
     TOKEN_SECRET: "${self:custom.tokens.TOKEN_SECRET}"
 
 package:

@@ -56,13 +56,14 @@ module.exports.createUser = async event => {
 
 }
 
-module.exports.login = async event => {
-  let user = await db.exec(dbUrl, () => User.find({ username: event.username }));
-  if (user.length < 1)
+module.exports.login = async data => {
+  console.log('event', data)
+  let user = await db.exec(dbUrl, () => User.find({ username: data.username }));
+  if (user.length !== 1)
     return status.createErrorResponse(401, 'Authentication Failed')
   else {
     try {
-      let bycryptResult = await bcrypt.compare(event.password, user[0].password);
+      let bycryptResult = await bcrypt.compare(data.password, user[0].password);
       if (!bycryptResult)
         return status.createErrorResponse(401, 'Authentication Failed');
       const token = jwt.sign({
@@ -71,7 +72,7 @@ module.exports.login = async event => {
       },
         process.env.TOKEN_SECRET,
         {
-          expiresIn: "1h"
+          expiresIn: "7d"
         }
       );
       console.log(`Generated token: ${token}`);
@@ -82,7 +83,7 @@ module.exports.login = async event => {
       })
 
     } catch (err) {
-      return status.createErrorResponse(401, err.msg);
+      return status.createErrorResponse(401, err.message);
     }
   }
 }
