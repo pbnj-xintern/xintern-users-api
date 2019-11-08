@@ -28,10 +28,8 @@ module.exports.createUser = async event => {
         password: hash,
         email: event.email,
         institution: event.institution,
-        name: {
-          first: event.name.first,
-          last: event.name.last
-        },
+        firstName: event.firstName,
+        lastName: event.lastName,
         sex: event.sex,
         program: event.program,
         age: event.age,
