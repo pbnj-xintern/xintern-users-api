@@ -46,6 +46,7 @@ module.exports.createUser = async event => {
         return status.createErrorResponse(500, err.message)
       }
     } catch (err) {
+      console.log(err)
       return status.createErrorResponse(500, "Unable to generate hash")
     }
   }
@@ -55,7 +56,6 @@ module.exports.createUser = async event => {
 }
 
 module.exports.login = async data => {
-  console.log('event', data)
   let user = await db.exec(dbUrl, () => User.find({ username: data.username }));
   if (user.length !== 1)
     return status.createErrorResponse(401, 'Authentication Failed')
@@ -70,7 +70,7 @@ module.exports.login = async data => {
       },
         process.env.TOKEN_SECRET,
         {
-          expiresIn: "7d"
+          expiresIn: "1d"
         }
       );
       console.log(`Generated token: ${token}`);

@@ -1,0 +1,16 @@
+{
+    "body": {
+        "username": "praiy",
+        "email": "praiyon@gmail.com",
+        "institution": "waterloo",
+        "firstName": "Praiyon",
+        "lastName": "Kumarasamy",
+        "sex":"male",
+        "photo": "",
+        "program": "Software Engineering",
+        "age": 21,
+        "isShowInfo": true,
+        "role": "ADMIN",
+        "password" : "test"
+      }
+}
