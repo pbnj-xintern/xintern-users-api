@@ -5,6 +5,9 @@ service: xintern-users-api # NOTE: update this with your service name
 # You can pin your service to only deploy with a specific Serverless version
 # Check out our docs for more details
 # frameworkVersion: "=X.X.X"
+plugins:
+  - serverless-domain-manager
+
 
 provider:
   name: aws
@@ -22,6 +25,11 @@ package:
 custom:
   stage: ${opt:stage, self:provider.stage}
   tokens: ${file(tokens.yml):${self:custom.stage}}
+  customDomain:
+    domainName: 'api.xintern.co' # Change this to your domain.
+    basePath: 'user' # This will be prefixed to all routes
+    stage: ${self:provider.stage}
+    createRoute53Record: true
 
 # you can add statements to the Lambda function's IAM Role here
 #  iamRoleStatements:
@@ -53,7 +61,7 @@ functions:
     handler: api-handler.createUser
     events:
       - http:
-          path: create
+          path: /
           method: POST
           cors: true
   patchAdminUser:
