@@ -31,31 +31,6 @@ custom:
     stage: ${self:provider.stage}
     createRoute53Record: true
 
-# you can add statements to the Lambda function's IAM Role here
-#  iamRoleStatements:
-#    - Effect: "Allow"
-#      Action:
-#        - "s3:ListBucket"
-#      Resource: { "Fn::Join" : ["", ["arn:aws:s3:::", { "Ref" : "ServerlessDeploymentBucket" } ] ]  }
-#    - Effect: "Allow"
-#      Action:
-#        - "s3:PutObject"
-#      Resource:
-#        Fn::Join:
-#          - ""
-#          - - "arn:aws:s3:::"
-#            - "Ref" : "ServerlessDeploymentBucket"
-#            - "/*"
-
-# you can add packaging information here
-#package:
-#  include:
-#    - include-me.js
-#    - include-me-dir/**
-#  exclude:
-#    - exclude-me.js
-#    - exclude-me-dir/**
-
 functions:
   createUser:
     handler: api-handler.createUser
@@ -77,6 +52,17 @@ functions:
       - http:
           path: login
           method: POST
+          cors: true
+  getUserByUsername:
+    handler: api-handler.getUserByUsername
+    events:
+      - http:
+          path: /{username}
+          method: GET
+          request:
+            parameters:
+              paths:
+                username: true
           cors: true
 
 #    The following are a few example events you can configure

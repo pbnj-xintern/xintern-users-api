@@ -114,3 +114,30 @@ module.exports.patchToAdmin = async (newAdminId, adminId) => {
     })
   );
 }
+
+module.exports.getUserByUsername = async username =>
+  db.exec(dbUrl, () =>
+    User.find({ username: username })
+      .then(users => {
+        if (users.length > 1) throw new Error('Found too many users')
+
+        let obtainedUser = users[0]
+
+        if (!obtainedUser.isShowInfo) {
+          return {
+            username: obtainedUser.username,
+            isShowInfo: false
+          }
+        }
+
+        return {
+          username: obtainedUser.username,
+          email: obtainedUser.email,
+          institution: obtainedUser.institution,
+          program: obtainedUser.program,
+          createdAt: obtainedUser.createdAt,
+          isShowInfo: true
+        }
+      })
+      .catch(e => { console.error('error finding username', e); return false })
+  )
